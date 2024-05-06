@@ -8,13 +8,14 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  colors,
   TextField,
   DialogActions,
   Button,
 } from "@mui/material";
 import CommentList from "./commentList";
 import Card from "@mui/material/Card";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function UserPostsPage({ userId, userName }) {
   const [posts, setPosts] = useState([]);
@@ -27,14 +28,14 @@ function UserPostsPage({ userId, userName }) {
   const [editedPost, setEditedPost] = useState({});
 
   const handleAddEditDialog = (post = {}) => {
-    setEditedPost({ ...post, userId }); 
+    setEditedPost({ ...post, userId });
     setOpenAddEditDialog(true);
   };
 
   const handleSavePost = () => {
     try {
       if (editedPost.id) {
-        const updatedPosts = posts.map(post =>
+        const updatedPosts = posts.map((post) =>
           post.id === editedPost.id ? editedPost : post
         );
         setPosts(updatedPosts);
@@ -49,7 +50,16 @@ function UserPostsPage({ userId, userName }) {
     }
   };
 
-  const handleDeletePost = (postId) => {};
+  const handleEditPost = (post) => {
+    setEditedPost(post);
+    setOpenAddEditDialog(true);
+  };
+
+  // Tambahkan fungsi untuk menghapus posting
+  const handleDeletePost = (postId) => {
+    const updatedPosts = posts.filter((post) => post.id !== postId);
+    setPosts(updatedPosts);
+  };
 
   useEffect(() => {
     async function fetchUserPosts() {
@@ -93,31 +103,42 @@ function UserPostsPage({ userId, userName }) {
         boxShadow: "none",
       }}
     >
-                      <Button onClick={() => handleAddEditDialog()}>Add Post</Button>
+      <Button sx={{ padding: "20px" }} onClick={() => handleAddEditDialog()}>
+        Add Post
+      </Button>
 
-                      <Dialog open={openAddEditDialog} onClose={() => setOpenAddEditDialog(false)}>
-  <DialogTitle>{editedPost.id ? "Edit Post" : "Add Post"}</DialogTitle>
-  <DialogContent>
-    <TextField
-      fullWidth
-      label="Title"
-      value={editedPost.title || ""}
-      onChange={(e) => setEditedPost({ ...editedPost, title: e.target.value })}
-    />
-    <TextField
-      fullWidth
-      multiline
-      rows={4}
-      label="Body"
-      value={editedPost.body || ""}
-      onChange={(e) => setEditedPost({ ...editedPost, body: e.target.value })}
-    />
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setOpenAddEditDialog(false)}>Cancel</Button>
-    <Button onClick={handleSavePost}>{editedPost.id ? "Save" : "Add"}</Button>
-  </DialogActions>
-</Dialog>
+      <Dialog
+        open={openAddEditDialog}
+        onClose={() => setOpenAddEditDialog(false)}
+      >
+        <DialogTitle>{editedPost.id ? "Edit Post" : "Add Post"}</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            label="Title"
+            value={editedPost.title || ""}
+            onChange={(e) =>
+              setEditedPost({ ...editedPost, title: e.target.value })
+            }
+          />
+          <TextField
+            fullWidth
+            multiline
+            rows={4}
+            label="Body"
+            value={editedPost.body || ""}
+            onChange={(e) =>
+              setEditedPost({ ...editedPost, body: e.target.value })
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenAddEditDialog(false)}>Cancel</Button>
+          <Button onClick={handleSavePost}>
+            {editedPost.id ? "Save" : "Add"}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <div>
         <Typography
@@ -129,17 +150,20 @@ function UserPostsPage({ userId, userName }) {
         </Typography>
         <List>
           {posts.map((post) => (
-            <ListItem
-              key={post.id}
-              button
-              onClick={() => handlePostClick(post)}
-            >
-              <ListItemText
-                sx={{ color: "white" }}
-                primary={post.title}
-                secondary={post.body}
-              />
-
+            <ListItem key={post.id} button>
+              <div onClick={() => handlePostClick(post)}>
+                <ListItemText
+                  sx={{ color: "white" }}
+                  primary={post.title}
+                  secondary={post.body}
+                />
+              </div>
+              <Button onClick={() => handleEditPost(post)}>
+                <EditIcon />
+              </Button>
+              <Button onClick={() => handleDeletePost(post.id)}>
+                <DeleteIcon />
+              </Button>
             </ListItem>
           ))}
         </List>
