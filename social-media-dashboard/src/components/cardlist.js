@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import UserListPage from "./listUser";
 import { Grid } from "@mui/material";
 import UserPostsPage from "./userPostPage";
+import UserAlbumPage from "./userAlbumPage";
+
 
 function CardList() {
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -24,6 +26,8 @@ function CardList() {
       </Grid>
       <Grid md={8}>
         {selectedUserId && <UserPostsPage userId={selectedUserId} />}
+        {selectedUserId && <UserAlbumPage userId={selectedUserId} />}
+
       </Grid>
     </Grid>
   );
