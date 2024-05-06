@@ -28,8 +28,8 @@ function UserListPage({ onUserSelected }) {
     fetchUsers();
   }, []);
 
-  const handleUserClick = (userId) => {
-    onUserSelected(userId);
+  const handleUserClick = (userId, userName) => {
+    onUserSelected(userId, userName);
   };
 
   if (loading) {
@@ -55,15 +55,16 @@ function UserListPage({ onUserSelected }) {
           className="card-top"
         />
         <div>
-          <Typography variant="h4" gutterBottom>
+          <Typography sx={{ padding: "10px", color: "white" }} variant="h4" gutterBottom>
             User List
           </Typography>
           <List>
             {users.map((user) => (
               <ListItem
+              sx={{ color: 'white' }}
                 key={user.id}
                 button
-                onClick={() => handleUserClick(user.id)} // Panggil handleUserClick saat pengguna mengklik
+                onClick={() => handleUserClick(user.id, user.name)} // Panggil handleUserClick saat pengguna mengklik
               >
                 <ListItemText primary={user.name} />
               </ListItem>

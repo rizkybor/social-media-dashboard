@@ -4,11 +4,13 @@ import { Grid } from "@mui/material";
 import UserPostsPage from "./userPostPage";
 import UserAlbumPage from "./userAlbumPage";
 
-
 function CardList() {
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const handleUserSelected = (userId) => {
+  const [selectedUserName, setSelectedUserName] = useState(null);
+
+  const handleUserSelected = (userId, userName) => {
     setSelectedUserId(userId);
+    setSelectedUserName(userName);
   };
 
   return (
@@ -25,9 +27,15 @@ function CardList() {
         />
       </Grid>
       <Grid md={8}>
-        {selectedUserId && <UserPostsPage userId={selectedUserId} />}
-        {selectedUserId && <UserAlbumPage userId={selectedUserId} />}
+        {selectedUserId && (
+          <UserPostsPage userId={selectedUserId} userName={selectedUserName} />
+        )}
+        <br />
+        <br />
 
+        {selectedUserId && (
+          <UserAlbumPage userId={selectedUserId} userName={selectedUserName} />
+        )}
       </Grid>
     </Grid>
   );

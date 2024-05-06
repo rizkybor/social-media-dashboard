@@ -32,6 +32,8 @@ function CommentList({ postId }) {
 
   return (
     <div>
+        <hr/>
+        <br/>
       <Typography variant="h6" gutterBottom>Comments</Typography>
       <List>
         {comments.map(comment => (

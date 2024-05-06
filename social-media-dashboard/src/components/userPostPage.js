@@ -1,19 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Typography, List, ListItem, ListItemText, Dialog, DialogTitle, DialogContent } from '@mui/material';
-import CommentList from './commentList';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  colors,
+  TextField,
+  DialogActions,
+  Button,
+} from "@mui/material";
+import CommentList from "./commentList";
+import Card from "@mui/material/Card";
 
-function UserPostsPage({ userId }) {
+function UserPostsPage({ userId, userName }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedPost, setSelectedPost] = useState(null); // State untuk menyimpan post yang dipilih
-  const [openDialog, setOpenDialog] = useState(false); // State untuk mengontrol dialog
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const [openAddEditDialog, setOpenAddEditDialog] = useState(false);
+  const [editedPost, setEditedPost] = useState({});
+
+  const handleAddEditDialog = (post = {}) => {
+    setEditedPost({ ...post, userId }); 
+    setOpenAddEditDialog(true);
+  };
+
+  const handleSavePost = () => {
+    try {
+      if (editedPost.id) {
+        const updatedPosts = posts.map(post =>
+          post.id === editedPost.id ? editedPost : post
+        );
+        setPosts(updatedPosts);
+      } else {
+        const newPost = { ...editedPost, id: Date.now() }; // Buat ID sementara
+        const updatedPosts = [...posts, newPost];
+        setPosts(updatedPosts);
+      }
+      setOpenAddEditDialog(false);
+    } catch (error) {
+      console.error("Error saving post:", error);
+    }
+  };
+
+  const handleDeletePost = (postId) => {};
 
   useEffect(() => {
     async function fetchUserPosts() {
       try {
-        const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${userId}/posts`);
+        const response = await axios.get(
+          `https://jsonplaceholder.typicode.com/users/${userId}/posts`
+        );
         setPosts(response.data);
         setLoading(false);
       } catch (error) {
@@ -23,15 +66,15 @@ function UserPostsPage({ userId }) {
     }
 
     fetchUserPosts();
-  }, [userId]);
+  }, [userId, userName]);
 
   const handlePostClick = (post) => {
-    setSelectedPost(post); // Set post yang dipilih saat diklik
-    setOpenDialog(true); // Buka dialog
+    setSelectedPost(post);
+    setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false); // Tutup dialog
+    setOpenDialog(false);
   };
 
   if (loading) {
@@ -43,29 +86,77 @@ function UserPostsPage({ userId }) {
   }
 
   return (
-    <div>
-      <Typography variant="h4" gutterBottom>User's Posts</Typography>
-      <List>
-        {posts.map(post => (
-          <ListItem key={post.id} button onClick={() => handlePostClick(post)}>
-            <ListItemText
-              primary={post.title}
-              secondary={post.body}
-            />
-          </ListItem>
-        ))}
-      </List>
+    <Card
+      sx={{
+        minWidth: 270,
+        bgcolor: "var(--card-bg)",
+        boxShadow: "none",
+      }}
+    >
+                      <Button onClick={() => handleAddEditDialog()}>Add Post</Button>
 
-      {/* Dialog untuk menampilkan detail post */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>{selectedPost && selectedPost.title}</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1">{selectedPost && selectedPost.body}</Typography>
-          {/* Menampilkan daftar komentar di dalam dialog */}
-          {selectedPost && <CommentList postId={selectedPost.id} />}
-        </DialogContent>
-      </Dialog>
-    </div>
+                      <Dialog open={openAddEditDialog} onClose={() => setOpenAddEditDialog(false)}>
+  <DialogTitle>{editedPost.id ? "Edit Post" : "Add Post"}</DialogTitle>
+  <DialogContent>
+    <TextField
+      fullWidth
+      label="Title"
+      value={editedPost.title || ""}
+      onChange={(e) => setEditedPost({ ...editedPost, title: e.target.value })}
+    />
+    <TextField
+      fullWidth
+      multiline
+      rows={4}
+      label="Body"
+      value={editedPost.body || ""}
+      onChange={(e) => setEditedPost({ ...editedPost, body: e.target.value })}
+    />
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpenAddEditDialog(false)}>Cancel</Button>
+    <Button onClick={handleSavePost}>{editedPost.id ? "Save" : "Add"}</Button>
+  </DialogActions>
+</Dialog>
+
+      <div>
+        <Typography
+          sx={{ padding: "20px", color: "white" }}
+          variant="h4"
+          gutterBottom
+        >
+          Posts by {userName}
+        </Typography>
+        <List>
+          {posts.map((post) => (
+            <ListItem
+              key={post.id}
+              button
+              onClick={() => handlePostClick(post)}
+            >
+              <ListItemText
+                sx={{ color: "white" }}
+                primary={post.title}
+                secondary={post.body}
+              />
+
+            </ListItem>
+          ))}
+        </List>
+
+        {/* Dialog untuk menampilkan detail post */}
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <DialogTitle>{selectedPost && selectedPost.title}</DialogTitle>
+          <DialogContent>
+            <Typography variant="body1">
+              {selectedPost && selectedPost.body}
+            </Typography>
+            {/* Menampilkan daftar komentar di dalam dialog */}
+            {selectedPost && <CommentList postId={selectedPost.id} />}
+          </DialogContent>
+        </Dialog>
+      </div>
+    </Card>
   );
 }
 
