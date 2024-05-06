@@ -1,8 +1,6 @@
 import Header from "./components/header";
 import CardList from "./components/cardlist";
-import UserListPage from "./components/listUser";
-
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 
 import "./style/style.scss";
 

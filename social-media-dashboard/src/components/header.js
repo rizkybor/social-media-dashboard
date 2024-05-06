@@ -98,6 +98,7 @@ export default class Header extends Component {
               <h1 sx={{ padding: "20px" }}>Social Media Dashboard</h1>
               <h3 sx={{ padding: "20px" }}>By Rizky Ajie Kurniawan</h3>
 
+
             </div>
           </Grid>
           <Grid>
