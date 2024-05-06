@@ -18,7 +18,7 @@ function CommentList({ postId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [editedComment, setEditedComment] = useState({}); // Simpan objek komentar yang sedang diedit
+  const [editedComment, setEditedComment] = useState({}); 
   const [editCommentIndex, setEditCommentIndex] = useState(-1);
   const [newComment, setNewComment] = useState({
     name: "",
@@ -60,7 +60,7 @@ function CommentList({ postId }) {
 
   const handleEditComment = (index) => {
     setEditCommentIndex(index);
-    setEditedComment({ ...comments[index] }); // Menyalin objek komentar yang akan diedit
+    setEditedComment({ ...comments[index] });
     setOpenEditDialog(true);
   };
 
