@@ -2,8 +2,7 @@ import React, { Component, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch, { SwitchProps } from "@mui/material/Switch";
-import { Style } from "../style/style.scss";
+import Switch from "@mui/material/Switch";
 import { Grid } from "@mui/material";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({

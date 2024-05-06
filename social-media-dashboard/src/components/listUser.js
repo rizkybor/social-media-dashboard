@@ -64,7 +64,7 @@ function UserListPage({ onUserSelected }) {
               sx={{ color: 'white' }}
                 key={user.id}
                 button
-                onClick={() => handleUserClick(user.id, user.name)} // Panggil handleUserClick saat pengguna mengklik
+                onClick={() => handleUserClick(user.id, user.name)}
               >
                 <ListItemText primary={user.name} />
               </ListItem>

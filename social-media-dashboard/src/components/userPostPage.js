@@ -40,7 +40,7 @@ function UserPostsPage({ userId, userName }) {
         );
         setPosts(updatedPosts);
       } else {
-        const newPost = { ...editedPost, id: Date.now() }; // Buat ID sementara
+        const newPost = { ...editedPost, id: Date.now() }; 
         const updatedPosts = [...posts, newPost];
         setPosts(updatedPosts);
       }
@@ -55,7 +55,6 @@ function UserPostsPage({ userId, userName }) {
     setOpenAddEditDialog(true);
   };
 
-  // Tambahkan fungsi untuk menghapus posting
   const handleDeletePost = (postId) => {
     const updatedPosts = posts.filter((post) => post.id !== postId);
     setPosts(updatedPosts);
@@ -168,14 +167,12 @@ function UserPostsPage({ userId, userName }) {
           ))}
         </List>
 
-        {/* Dialog untuk menampilkan detail post */}
         <Dialog open={openDialog} onClose={handleCloseDialog}>
           <DialogTitle>{selectedPost && selectedPost.title}</DialogTitle>
           <DialogContent>
             <Typography variant="body1">
               {selectedPost && selectedPost.body}
             </Typography>
-            {/* Menampilkan daftar komentar di dalam dialog */}
             {selectedPost && <CommentList postId={selectedPost.id} />}
           </DialogContent>
         </Dialog>
