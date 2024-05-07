@@ -55,13 +55,12 @@ function UserListPage({ onUserSelected }) {
           className="card-top"
         />
         <div>
-          <Typography sx={{ padding: "10px", color: "white" }} variant="h4" gutterBottom>
+          <Typography sx={{ padding: "10px" }} variant="h4" gutterBottom>
             User List
           </Typography>
           <List>
             {users.map((user) => (
               <ListItem
-              sx={{ color: 'white' }}
                 key={user.id}
                 button
                 onClick={() => handleUserClick(user.id, user.name)}

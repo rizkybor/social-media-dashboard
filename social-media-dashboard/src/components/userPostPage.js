@@ -141,7 +141,7 @@ function UserPostsPage({ userId, userName }) {
 
       <div>
         <Typography
-          sx={{ padding: "20px", color: "white" }}
+          sx={{ padding: "20px" }}
           variant="h4"
           gutterBottom
         >
@@ -152,7 +152,6 @@ function UserPostsPage({ userId, userName }) {
             <ListItem key={post.id} button>
               <div onClick={() => handlePostClick(post)}>
                 <ListItemText
-                  sx={{ color: "white" }}
                   primary={post.title}
                   secondary={post.body}
                 />
