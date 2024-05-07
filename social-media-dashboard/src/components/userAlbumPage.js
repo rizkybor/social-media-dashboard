@@ -84,7 +84,7 @@ function UserAlbumsPage({ userId, userName }) {
           padding: "20px",
         }}
       >
-        <Typography sx={{ padding: "20px", color: "white" }} variant="h4" gutterBottom>
+        <Typography sx={{ padding: "20px" }} variant="h4" gutterBottom>
           Albums by {userName}
         </Typography>
         <Grid container spacing={2}>
